@@ -7,7 +7,7 @@ import (
 	"strings"
 )
 
-type Exestension struct {
+type Files struct {
 	ExeList        []string
 	SourceDir      string
 	DestinationDir string
@@ -21,30 +21,30 @@ var (
 	themeDir         = userHomeDir + "\\Documents\\ThemeFiles\\"
 	picDir           = userHomeDir + "\\Documents\\PicFiles\\"
 
-	buildExe = Exestension{
+	buildFiles = Files{
 		[]string{".exe", ".zip", ".msi", ".iso"},
 		downloadsDir,
 		buildDir,
 	}
 
-	docExe = Exestension{
+	docFiles = Files{
 		[]string{".pdf"},
 		downloadsDir,
 		docDir,
 	}
-	themeExe = Exestension{
+	themeFiles = Files{
 		[]string{".vsix"},
 		downloadsDir,
 		themeDir,
 	}
-	picExe = Exestension{
+	picFiles = Files{
 		[]string{".jpeg", ".jpg", ".gif", ".png"},
 		downloadsDir,
 		picDir,
 	}
 )
 
-func (e Exestension) GetFiles() ([]os.DirEntry, error) {
+func (e Files) GetFiles() ([]os.DirEntry, error) {
 	movedFiles := []os.DirEntry{}
 	entries, err := os.ReadDir(e.SourceDir)
 	if err != nil {
@@ -63,7 +63,7 @@ func (e Exestension) GetFiles() ([]os.DirEntry, error) {
 	return movedFiles, nil
 }
 
-func (e Exestension) MoveFiles(files []os.DirEntry) error {
+func (e Files) MoveFiles(files []os.DirEntry) error {
 	for _, file := range files {
 		filePath := e.SourceDir + file.Name()
 

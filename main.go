@@ -5,7 +5,7 @@ import (
 )
 
 func main() {
-	archivedFiles := []Exestension{buildExe, docExe, themeExe, picExe}
+	archivedFiles := []Files{buildFiles, docFiles, themeFiles, picFiles}
 	for _, archivedFile := range archivedFiles {
 		movedFiles, err := archivedFile.GetFiles()
 		if err != nil {
