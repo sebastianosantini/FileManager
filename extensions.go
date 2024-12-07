@@ -13,6 +13,37 @@ type Exestension struct {
 	DestinationDir string
 }
 
+var (
+	userHomeDir, err = os.UserHomeDir()
+	downloadsDir     = userHomeDir + "\\Downloads\\"
+	buildDir         = userHomeDir + "\\Documents\\BuildFiles\\"
+	docDir           = userHomeDir + "\\Documents\\DocFiles\\"
+	themeDir         = userHomeDir + "\\Documents\\ThemeFiles\\"
+	picDir           = userHomeDir + "\\Documents\\PicFiles\\"
+
+	buildExe = Exestension{
+		[]string{".exe", ".zip", ".msi", ".iso"},
+		downloadsDir,
+		buildDir,
+	}
+
+	docExe = Exestension{
+		[]string{".pdf"},
+		downloadsDir,
+		docDir,
+	}
+	themeExe = Exestension{
+		[]string{".vsix"},
+		downloadsDir,
+		themeDir,
+	}
+	picExe = Exestension{
+		[]string{".jpeg", ".jpg", ".gif", ".png"},
+		downloadsDir,
+		picDir,
+	}
+)
+
 func (e Exestension) GetFiles() ([]os.DirEntry, error) {
 	movedFiles := []os.DirEntry{}
 	entries, err := os.ReadDir(e.SourceDir)
@@ -35,23 +66,28 @@ func (e Exestension) GetFiles() ([]os.DirEntry, error) {
 func (e Exestension) MoveFiles(files []os.DirEntry) error {
 	for _, file := range files {
 		filePath := e.SourceDir + file.Name()
+
 		inputFile, err := os.Open(filePath)
 		if err != nil {
-			fmt.Println("There was an error while opening the file: ", err)
 			return err
 		}
 		defer inputFile.Close()
 
+		_, err = os.Stat(e.DestinationDir)
+		if os.IsNotExist(err) {
+			if err := os.Mkdir(e.DestinationDir, os.ModePerm); err != nil {
+				return err
+			}
+		}
+
 		outputFile, err := os.Create(e.DestinationDir + file.Name())
 		if err != nil {
-			fmt.Println("There was an error while creating the output file:", err)
 			return err
 		}
 		defer outputFile.Close()
 
 		_, err = io.Copy(outputFile, inputFile)
 		if err != nil {
-			fmt.Println("There was an error while copying the input file onto the output file:", err)
 			return err
 		}
 
@@ -59,7 +95,6 @@ func (e Exestension) MoveFiles(files []os.DirEntry) error {
 
 		err = os.Remove(filePath)
 		if err != nil {
-			fmt.Println("There was an error while deleting the input file:", err)
 			return err
 		}
 	}
