@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"io"
+	"log"
 	"os"
 	"strings"
 )
@@ -44,7 +45,7 @@ var (
 	}
 )
 
-func (e Files) GetFiles() ([]os.DirEntry, error) {
+func (e Files) getFiles() ([]os.DirEntry, error) {
 	movedFiles := []os.DirEntry{}
 	entries, err := os.ReadDir(e.SourceDir)
 	if err != nil {
@@ -63,7 +64,7 @@ func (e Files) GetFiles() ([]os.DirEntry, error) {
 	return movedFiles, nil
 }
 
-func (e Files) MoveFiles(files []os.DirEntry) error {
+func (e Files) moveFiles(files []os.DirEntry) error {
 	for _, file := range files {
 		filePath := e.SourceDir + file.Name()
 
@@ -100,4 +101,22 @@ func (e Files) MoveFiles(files []os.DirEntry) error {
 	}
 
 	return nil
+}
+
+func ManageFiles(files []Files) {
+	for _, archivedFile := range files {
+		movedFiles, err := archivedFile.getFiles()
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		if len(movedFiles) == 0 {
+			continue
+		}
+
+		err = archivedFile.moveFiles(movedFiles)
+		if err != nil {
+			log.Fatal(err)
+		}
+	}
 }
