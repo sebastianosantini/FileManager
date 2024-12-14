@@ -1,4 +1,4 @@
-package main
+package file
 
 import (
 	"fmt"
@@ -15,30 +15,30 @@ type Files struct {
 }
 
 var (
-	userHomeDir, err = os.UserHomeDir()
-	downloadsDir     = userHomeDir + "\\Downloads\\"
-	buildDir         = userHomeDir + "\\Documents\\BuildFiles\\"
-	docDir           = userHomeDir + "\\Documents\\DocFiles\\"
-	themeDir         = userHomeDir + "\\Documents\\ThemeFiles\\"
-	picDir           = userHomeDir + "\\Documents\\PicFiles\\"
+	userHomeDir, _ = os.UserHomeDir()
+	downloadsDir   = userHomeDir + "\\Downloads\\"
+	buildDir       = userHomeDir + "\\Documents\\BuildFiles\\"
+	docDir         = userHomeDir + "\\Documents\\DocFiles\\"
+	themeDir       = userHomeDir + "\\Documents\\ThemeFiles\\"
+	picDir         = userHomeDir + "\\Documents\\PicFiles\\"
 
-	buildFiles = Files{
+	BuildFiles = Files{
 		[]string{".exe", ".zip", ".msi", ".iso"},
 		downloadsDir,
 		buildDir,
 	}
 
-	docFiles = Files{
+	DocFiles = Files{
 		[]string{".pdf"},
 		downloadsDir,
 		docDir,
 	}
-	themeFiles = Files{
+	ThemeFiles = Files{
 		[]string{".vsix"},
 		downloadsDir,
 		themeDir,
 	}
-	picFiles = Files{
+	PicFiles = Files{
 		[]string{".jpeg", ".jpg", ".gif", ".png"},
 		downloadsDir,
 		picDir,

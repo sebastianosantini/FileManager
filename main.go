@@ -1,6 +1,10 @@
 package main
 
+import (
+	"filemanager/file"
+)
+
 func main() {
-	archivedFiles := []Files{buildFiles, docFiles, themeFiles, picFiles}
-	ManageFiles(archivedFiles)
+	archivedFiles := []file.Files{file.BuildFiles, file.DocFiles, file.ThemeFiles, file.PicFiles}
+	file.ManageFiles(archivedFiles)
 }
